@@ -4,29 +4,30 @@ import axios from 'axios'
 const baseURL = 'http://localhost:3001'
 
 const Elements = ({ watchList }) => {
-    return watchList.map((anime) => {
-        return <li>{anime}</li>
+    if(watchList.length === 0) {
+        return <div>You have no anime on your plan-to-watch list</div>;
+    }
+    return watchList.map((a) => {
+        return <li key={a.id}>{a.anime}</li>
     })
 }
-
-const MyList = () => {
+const MyList = ({ userid }) => {
     const [ watchList, setWatchList ] = useState([])
 
     useEffect(() => {
-        axios.post(`${baseURL}/get-list`)
+        axios.post(`${baseURL}/get-list`, { "user": userid })
             .then((response) => {
-                console.log(response)
                 setWatchList(response.data)
             })
-            .catch(() => {
-                console.log("error getting watch list")
+            .catch((er) => {
+                console.log(er)
             })
-    }, [])
+    }, [userid])
     
     return (<div className="my-list">
         <h2>Plan-to-watch List:</h2>
         <ol>
-            <Elements watchList={watchList}/>
+            <Elements watchList={watchList} />
         </ol>
     </div>)
 }

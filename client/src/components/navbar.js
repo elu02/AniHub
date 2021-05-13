@@ -15,7 +15,9 @@ const myNavbar = () => {
                 <Link to="/about" className="nav-link">About</Link>
               </Nav>
               <Nav className="justify-content-end">
-               <Link to="/login" className="nav-link">Login/Register</Link>
+               <Link to="/login" className="nav-link">Login</Link>
+               <Link to="/register" className="nav-link">Register</Link>
+               <Link to="/logout" className="nav-link">Logout</Link>
               </Nav>
             </Navbar>)
 }

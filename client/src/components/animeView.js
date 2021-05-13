@@ -1,9 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 const baseURL = 'http://localhost:3001'
 
 const AnimeView = ({ anime, setAnime, history, userid }) => {
+    const [ added, setAdded ] = useState(false)
+    
     useEffect(() => {
         axios.get(`https://api.jikan.moe/v3/anime/${anime.mal_id}`)
             .then((response) => {
@@ -33,7 +35,11 @@ const AnimeView = ({ anime, setAnime, history, userid }) => {
         } else {
             axios.post(`${baseURL}/add`, {
                 "user": userid,
-                "anime": anime.id
+                "anime": anime.title
+            }).then((res) => {
+                if (res.status === 200) {
+                    setAdded(true)
+                }
             })
         }
     }
@@ -61,7 +67,7 @@ const AnimeView = ({ anime, setAnime, history, userid }) => {
                         Go Back
                     </button>
                     <button className="add-to-list" onClick={addToList}>
-                        Add to List
+                        {added ? "Added!" : "Add to List"}
                     </button>
                 </div>
                 <div className="col2">

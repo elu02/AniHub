@@ -35,10 +35,10 @@ const App = () => {
 
   useEffect(() => {
     const id = localStorage.getItem('userID')
-    if (id) {
+    if (id !== "undefined") {
       setUserid(JSON.parse(id))
     }
-  }, [])
+  })
 
   return (
     <div className="App">
@@ -56,13 +56,19 @@ const App = () => {
             <AnimeView anime={anime} setAnime={setAnime} history={history} userid={userid}/>
           </Route>
           <Route exact path="/my-list">
-            <MyList />
+            <MyList userid={userid} history={history}/>
           </Route>
           <Route exact path="/about">
             <About />
           </Route>
           <Route exact path="/login">
-            <Login userid={userid} setUserid={setUserid}/>
+            <Login userid={userid} setUserid={setUserid} tab="login"/>
+          </Route>
+          <Route exact path="/register">
+            <Login userid={userid} setUserid={setUserid} tab="register"/>
+          </Route>
+          <Route exact path="/logout">
+            <Login userid={userid} setUserid={setUserid} tab="logout"/>
           </Route>
         </Switch>
       </main>

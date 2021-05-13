@@ -7,19 +7,40 @@ import Tab from 'react-bootstrap/Tab'
 
 const baseURL = 'http://localhost:3001'
 
-const Login = ({ userid, setUserid }) => {
+const RegisterResponse = ({msg}) => {
+    if (msg === "E1") {
+        return <div>error, username must be between 3 and 30 characters and password must be between 8 and 30 characters</div>
+    } else if (msg === "E2") {
+        return <div>error, username is taken</div>
+    } else if (msg === "OK") {
+        return <div>Success!</div>
+    } else {
+        return <div></div>
+    }
+}
+
+const Login = ({ userid, setUserid, tab }) => {
     const [ username, setUsername ] = useState("")
     const [ password, setPassword ] = useState("")
     const [ usernameLogin, setUsernameLogin ] = useState("")
     const [ passwordLogin, setPasswordLogin ] = useState("")
     const [ loginError, setLoginError ] = useState(false)
+    const [ registerMsg, setRegisterMsg ] = useState("")
 
     const registerUser = (e) => {
         e.preventDefault()
-        console.log(username, password)
         axios.post(`${baseURL}/register`, {
             username: username,
             password: password
+        }).then((res) => {
+            res = res.data
+            if (res === "E1") {
+                setRegisterMsg("E1")
+            } else if (res === "E2") {
+                setRegisterMsg("E2")
+            } else if (res === "OK") {
+                setRegisterMsg("OK")
+            }
         })
     }
 
@@ -33,10 +54,16 @@ const Login = ({ userid, setUserid }) => {
             resp = resp.data;
             if (resp === "not found") {
                 setLoginError(true)
+                return;
             }
             setLoginError(false)
             setUserid(resp[0].id)
         })
+    }
+    
+    const logoutUser = (e) => {
+        e.preventDefault()
+        setUserid(-1);
     }
 
     useEffect(() => {
@@ -45,7 +72,7 @@ const Login = ({ userid, setUserid }) => {
 
     return (<div className='login-container'>
         <div className="internal-login-container">
-            <Tabs defaultActiveKey="login">
+            <Tabs defaultActiveKey={tab}>
                 <Tab eventKey="login" title="Login">
                     <Form onSubmit={loginUser}>
                         <Form.Group>
@@ -61,8 +88,7 @@ const Login = ({ userid, setUserid }) => {
                         <Button variant="primary" type="submit">Login</Button>
                     </Form>
                     <div style={{color:"red"}}>{loginError ? "Username or password is incorrect" : ""}</div>
-                </Tab>
-                
+                </Tab> 
                 <Tab eventKey="register" title="Register">
                     <Form onSubmit={registerUser}>
                         <Form.Group>
@@ -77,6 +103,13 @@ const Login = ({ userid, setUserid }) => {
                         </Form.Group>
                         <Button variant="primary" type="submit">Register</Button>
                     </Form>
+                    <RegisterResponse msg={registerMsg} />
+                </Tab>
+                <Tab eventKey="logout" title="Logout">
+                    <Form style={{padding: "10px"}} onSubmit={logoutUser}>
+                        Are you sure? <Button variant="primary" type="submit">Yes</Button>
+                    </Form>
+                    <div style={{color:"red"}}>{loginError ? "Username or password is incorrect" : ""}</div>
                 </Tab>
             </Tabs>
         </div>

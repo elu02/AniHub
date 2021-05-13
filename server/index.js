@@ -34,40 +34,49 @@ app.post('/login', (req, res) => {
 app.post('/register', (req, res) => {
     const username = req.body.username
     const password = req.body.password
-    if (username.length > 30 || password.length > 30) {
+    if (username.length > 30 || password.length > 30 || password.length < 8 || username.length < 3) {
         res.send("E1")
+        return;
     }
     db.query(`INSERT INTO users (username, password) VALUES ("${username}", "${password}")`, (err, result) => {
         if (err) {
-            console.log(err)
+            res.send("E2")
+            return;
         }
-        res.send(result)
+        res.send("OK")
     })
 })
 
 app.post('/add', (req, res) => {
     const user = req.body.user
     const anime = req.body.anime
-    db.query(`CREATE TABLE IF NOT EXISTS ${user} (
+    if (anime === undefined) res.send("error, anime is undefined")
+    db.query(`CREATE TABLE IF NOT EXISTS user${user} (
                   id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-                  anime VARCHAR(255) NOT NULL
+                  anime VARCHAR(255) NOT NULL UNIQUE
               ) ENGINE=INNODB`, (err, result) => {
         if (err) {
             res.send(err)
         }
     })
-    db.query(`INSERT INTO ${user} (anime) VALUES ("${anime}")`, (err, result) => {
+    db.query(`INSERT IGNORE INTO user${user} (anime) VALUES ("${anime}")`, (err, result) => {
         if (err) {
             res.send(err)
+        } else {
+            res.send(result)
         }
     })
 })
 
 app.post('/get-list', (req, res) => {
     const user = req.body.user
-    db.query(`SELECT * FROM ${user}`, (err, result) => {
+    if (user === -1) {
+        res.status(404).send([])
+        return;
+    }
+    db.query(`SELECT * FROM user${user}`, (err, result) => {
         if (err) {
-            res.send(err)
+            res.end()
         }
         res.send(result)
     })
