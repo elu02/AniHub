@@ -3,4 +3,4 @@ Anihub is a user-friendly, full-stack webapp that allows you to search for infor
 
 Created April 2021.
 Languages used: HTML, CSS, Javascript, SQL.
-Main technologies/frameworks/libraries used: ReactJS, ExpressJS, NodeJS, MySQL, React Bootstrap.
+Main technologies/frameworks/libraries used: ReactJS, ExpressJS, NodeJS, MySQL, React Bootstrap, Jikan API.
