@@ -9,12 +9,13 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-const db = mysql.createConnection({
-    user: 'root',
-    host: 'localhost', 
+const db = mysql.createPool({
+    user: process.env.dbuser,
+    host: process.env.dbhost, 
     password: process.env.dbpw,
-    database: 'anihub'
+    database: process.env.dbschema
 });
+
 
 app.post('/login', (req, res) => {
     const username = req.body.username
