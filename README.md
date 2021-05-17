@@ -1,5 +1,5 @@
 # AniHub
-[Link to Site](https://anihub-app.herokuapp.com/)
+[Link to Site](https://anihub-app.herokuapp.com/) (Heroku takes ~10 seconds to load)
 
 Anihub is a user-friendly, full-stack webapp that allows you to search for information about any anime as well as add anime to your plan-to-watch list.
 
