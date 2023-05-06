@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button'
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 
-const baseURL = 'http://localhost:3001'
+const baseURL = ''
 
 const RegisterResponse = ({msg}) => {
     if (msg === "E1") {

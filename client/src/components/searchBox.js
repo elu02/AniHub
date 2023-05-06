@@ -1,8 +1,25 @@
 import React from 'react'
 import 'react-router-dom'
+import axios from 'axios'
 
-const Searchbox = ({ currentSearch, setCurrentSearch, history }) => {
+const maxQueries = 20
+
+async function getAnimeSearch(currentSearch, setAnimeList) {
+  if (currentSearch.length < 3) {
+    setAnimeList([])
+  }
+  await axios.get(`https://api.jikan.moe/v4/anime?q=${currentSearch}&limit=${maxQueries}`)
+    .then((response) => {
+      setAnimeList(response.data.data)
+    })
+    .catch(() => {
+      console.log("error getting search results")
+    })
+}
+
+const Searchbox = ({ currentSearch, setCurrentSearch, setAnimeList, history }) => {
   const gotoResults = (e) => {
+    getAnimeSearch(currentSearch, setAnimeList)
     e.preventDefault()
     history.push('/results')
   }

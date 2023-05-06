@@ -1,9 +1,17 @@
 import React from 'react'
 import Card from 'react-bootstrap/Card'
 import CardDeck from 'react-bootstrap/CardDeck'
+import axios from 'axios'
 
-const handleClick = (setAnime, anime, history) => {
-    setAnime(anime)
+async function handleClick(setAnime, anime, history) {
+    await axios.get(`https://api.jikan.moe/v4/anime/${anime.mal_id}`)
+        .then((response) => {
+            setAnime(response.data.data)
+        })
+        .catch(() => {
+            console.log("error finding anime with id: ")
+            
+        })
     history.push('/anime-view')
 }
 
@@ -13,17 +21,17 @@ const AnimeCard = ({ animeList, index, setAnime, history }) => {
     }
     const anime = animeList[index]
     return (<Card tag="a" onClick={() => handleClick(setAnime, anime, history)} style={{ cursor: "pointer" }} className="anime-card">
-                <Card.Img variant="top" src={anime.image_url}></Card.Img>
+                <Card.Img variant="top" src={anime.images.jpg.image_url}></Card.Img>
                 <Card.Body>
                     <Card.Title>{anime.title.length > 40 ? anime.title.slice(0, 37) + '...'
                                                             : anime.title}</Card.Title>
                     <Card.Text>
-                        {anime.synopsis.length > 140 ? anime.synopsis.slice(0, 137) + "..."
+                        {anime.synopsis && anime.synopsis.length > 140 ? anime.synopsis.slice(0, 137) + "..."
                                                         : anime.synopsis}
                     </Card.Text>
                 </Card.Body>
                 <Card.Footer>
-                    Rating: {anime.score}/10 ⭐
+                    Rating: {anime.score ? anime.score + "/10 ⭐" : "Not Rated"}
                 </Card.Footer>
             </Card>)
 }

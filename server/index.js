@@ -1,11 +1,11 @@
 const express = require('express')
 const mysql = require('mysql')
 const cors = require('cors')
-const { response } = require('express')
 require('dotenv').config()
 
 const app = express()
 
+app.use(express.static('build'))
 app.use(cors())
 app.use(express.json())
 
@@ -24,7 +24,7 @@ app.post('/login', (req, res) => {
         if (err) {
             res.send(err)
         }
-        if (result.length == 0) {
+        if (result && result.length == 0) {
             res.send("not found")
         } else {
             res.send(result)
@@ -83,7 +83,7 @@ app.post('/get-list', (req, res) => {
     })
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
-    console.log("server running on port " + 3001)
+    console.log(`server running on port ${PORT}`)
 })

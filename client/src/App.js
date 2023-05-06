@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import { Route, Switch, useHistory } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -11,27 +10,12 @@ import Login from './components/login.js'
 import About from './components/about.js'
 import MyList from './components/myList.js'
 
-const maxQueries = 20
-
 const App = () => {
   const history = useHistory()
   const [ currentSearch, setCurrentSearch ] = useState("")
   const [ animeList, setAnimeList ] = useState([])
-  const [ anime, setAnime ] = useState([])
+  const [ anime, setAnime ] = useState(null)
   const [ userid, setUserid ] = useState(-1)
-
-  useEffect(() => { 
-    if (currentSearch.length < 3) {
-      setAnimeList([])
-    }
-    axios.get(`https://api.jikan.moe/v3/search/anime?q=${currentSearch}&limit=${maxQueries}`)
-      .then((response) => {
-        setAnimeList(response.data.results)
-      })
-      .catch(() => {
-        console.log("error getting search results")
-      })
-  }, [currentSearch])
 
   useEffect(() => {
     const id = localStorage.getItem('userID')
@@ -39,6 +23,10 @@ const App = () => {
       setUserid(JSON.parse(id))
     }
   })
+
+  useEffect(() => {
+    document.title = "Anihub"
+  }, []);
 
   return (
     <div className="App">
