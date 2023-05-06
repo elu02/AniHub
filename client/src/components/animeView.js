@@ -1,32 +1,21 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-const baseURL = 'http://localhost:3001'
+const baseURL = ''
 
 const AnimeView = ({ anime, setAnime, history, userid }) => {
     const [ added, setAdded ] = useState(false)
-    
     useEffect(() => {
-        axios.get(`https://api.jikan.moe/v3/anime/${anime.mal_id}`)
-            .then((response) => {
-                setAnime(response.data)
-            })
-            .catch(() => {
-                console.log("error finding anime with id: ")
-                
-            })
-    }, [ anime.id, anime.mal_id, setAnime ])
-
-    useEffect(() => {
-        if (anime.title !== undefined) return;
-        const curAnime = localStorage.getItem('anime')
-        if (curAnime) {
-            setAnime(JSON.parse(curAnime))
+        if (!anime) {
+            const curAnime = localStorage.getItem('anime')
+            if (curAnime) {
+                setAnime(JSON.parse(curAnime))
+            }
         }
     }, [])
     
     useEffect(() => {
-        localStorage.setItem("anime", JSON.stringify(anime))
+        if (anime) localStorage.setItem("anime", JSON.stringify(anime))
     })
 
     const addToList = () => {
@@ -43,25 +32,25 @@ const AnimeView = ({ anime, setAnime, history, userid }) => {
             })
         }
     }
-
+    
     return (<div className="anime-view">
         <div className="flex-container">
             <div className="row">
                 <div className="col1">
-                    <div >
-                        <img className="av-image" src={anime.image_url} alt="anime cover"></img>
+                    <div>
+                        <img className="av-image" src={anime ? anime.images.jpg.image_url : "Loading"} alt="anime cover"></img>
                     </div>
                     <div className="av-rating">
-                        ⭐ Score: {anime.score}/10 
+                        ⭐ Score: {anime ? anime.score : "Loading"}/10 
                     </div>
                     <div className="av-episodes">
-                        🎥 Episodes: {anime.episodes}
+                        🎥 Episodes: {anime ? anime.episodes : "Loading"}
                     </div>
                     <div className="av-airing">
-                        ✈️ Status: {anime.status}
+                        ✈️ Status: {anime ? anime.status : "Loading"}
                     </div>
                     <div className="av-rated">
-                        🌚 Rated: {anime.rating}
+                        🌚 Rated: {anime ? anime.rating : "Loading"}
                     </div>
                     <button className="back-button" onClick={(() => { history.push('/results')} )}>
                         Go Back
@@ -72,11 +61,11 @@ const AnimeView = ({ anime, setAnime, history, userid }) => {
                 </div>
                 <div className="col2">
                     <div className="av-title">
-                        {anime.title}
+                        {anime ? anime.title : ""}
                     </div>
                     <div className="av-synopsis">
                         <b>Synopsis: </b>
-                        {anime.synopsis}
+                        {anime ? anime.synopsis : ""}
                     </div>
                 </div>
             </div>
