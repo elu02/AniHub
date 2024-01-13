@@ -82,6 +82,7 @@ body {
   display: flex;
   justify-content: center;
   background-color: #EEE;
+  height: 100vh;
 }
 
 .cards-container {

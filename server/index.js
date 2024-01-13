@@ -5,9 +5,9 @@ require('dotenv').config()
 
 const app = express()
 
-app.use(express.static('build'))
 app.use(cors())
 app.use(express.json())
+app.use(express.static('build'))
 
 const db = mysql.createPool({
     user: process.env.dbuser,
@@ -82,6 +82,10 @@ app.post('/get-list', (req, res) => {
         res.send(result)
     })
 })
+
+app.get('*', (req, res) => {
+    res.sendFile(__dirname + '/build/index.html');
+});
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {

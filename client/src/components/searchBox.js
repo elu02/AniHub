@@ -8,7 +8,7 @@ async function getAnimeSearch(currentSearch, setAnimeList) {
   if (currentSearch.length < 3) {
     setAnimeList([])
   }
-  await axios.get(`https://api.jikan.moe/v4/anime?q=${currentSearch}&limit=${maxQueries}`)
+  await axios.get(`https://api.jikan.moe/v4/anime?q=${currentSearch}&sfw=true&order_by=score&sort=desc&limit=${maxQueries}`)
     .then((response) => {
       setAnimeList(response.data.data)
     })

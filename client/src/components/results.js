@@ -17,7 +17,7 @@ async function handleClick(setAnime, anime, history) {
 
 const AnimeCard = ({ animeList, index, setAnime, history }) => {
     if (index >= animeList.length) {
-        return <Card className="anime-card"></Card>
+        return <div></div>
     }
     const anime = animeList[index]
     return (<Card tag="a" onClick={() => handleClick(setAnime, anime, history)} style={{ cursor: "pointer" }} className="anime-card">

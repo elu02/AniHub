@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button'
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 
-const baseURL = ''
+const baseURL = 'https://anihub-a9g4.onrender.com/'
 
 const RegisterResponse = ({msg}) => {
     if (msg === "E1") {

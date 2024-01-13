@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const baseURL = ''
+const baseURL = 'https://anihub-a9g4.onrender.com/'
 
 const Elements = ({ watchList }) => {
     if(watchList.length === 0) {

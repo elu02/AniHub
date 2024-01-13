@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-const baseURL = ''
+const baseURL = 'https://anihub-a9g4.onrender.com/'
 
 const AnimeView = ({ anime, setAnime, history, userid }) => {
     const [ added, setAdded ] = useState(false)
